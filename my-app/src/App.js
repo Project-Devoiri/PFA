@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../src/App.css'
-
+import axios from 'axios';
+import '../src/App.css';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
@@ -14,10 +14,27 @@ const LoginForm = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Username:', username);
-    console.log('Password:', password);
+    
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/test/create', {
+        username,
+        password
+      });
+
+      if (response.status === 201) {
+        console.log('User created successfully');
+        alert('User created successfully');
+      } else {
+        console.error('Failed to create user');
+        alert('Failed to create user');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error creating user');
+    }
+
     setUsername('');
     setPassword('');
   };
@@ -46,7 +63,7 @@ const LoginForm = () => {
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">SIGN UP</button>
       </form>
     </div>
   );
